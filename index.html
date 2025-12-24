@@ -3,28 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta
-      name="viewport"
-      content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"
     />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
     <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
+      name="viewport"
+      content="initial-scale=1, width=device-width, viewport-fit=cover"
     />
+    <meta name="color-scheme" content="light dark" />
     <meta name="apple-mobile-web-app-title" content="Brawrd" />
-    <meta name="mobile-web-app-capable" content="yes" />
-
-    <link rel="apple-touch-icon" href="/icon-192.png" />
 
     <title>Brawrd</title>
-    <link rel="stylesheet" href="/src/styles.scss" />
+    <link rel="stylesheet" href="./src/styles.scss" />
   </head>
   <body>
-    <!-- Your existing content -->
-    <button class="delete">Delete</button>
+    <button class="delete">🗑️</button>
 
     <div class="nav">
-      <button class="new">+</button>
+      <button class="new">New</button>
     </div>
 
     <div id="container">
@@ -32,10 +30,10 @@
     </div>
 
     <div class="toolbar">
-      <button class="addBoard">Board</button>
-      <button class="addPawn">Pawn (+)</button>
+      <button class="addBoard">📋 Add Board</button>
+      <button class="addPawn">⚫ Add Pawn</button>
     </div>
 
-    <script src="/src/index.ts" type="module"></script>
+    <script type="module" src="./src/index.ts"></script>
   </body>
 </html>
