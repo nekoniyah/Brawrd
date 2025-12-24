@@ -38,11 +38,122 @@ class BrawrdApp {
     this.init();
   }
 
+  // Add these properties to your BrawrdApp class
+  private isToolbarVisible = true;
+  private swipeGesture!: HammerManager;
+
+  // Add this method to set up swipe detection
+  private setupSwipeGestures() {
+    // Create hammer instance for the main container
+    this.swipeGesture = new Hammer(document.body);
+
+    // Enable swipe gestures
+    this.swipeGesture.get("swipe").set({
+      direction: Hammer.DIRECTION_VERTICAL,
+      threshold: 50,
+      velocity: 0.3,
+    });
+
+    // Swipe up to hide toolbar
+    this.swipeGesture.on("swipeup", () => {
+      this.hideToolbar();
+    });
+
+    // Swipe down to show toolbar
+    this.swipeGesture.on("swipedown", () => {
+      this.showToolbar();
+    });
+
+    // Double tap to toggle toolbar
+    this.swipeGesture.get("tap").set({
+      taps: 2,
+      threshold: 10,
+      posThreshold: 50,
+    });
+
+    this.swipeGesture.on("doubletap", () => {
+      this.toggleToolbar();
+    });
+  }
+
+  // Add these methods to control toolbar visibility
+  private hideToolbar() {
+    if (!this.isToolbarVisible) return;
+
+    this.isToolbarVisible = false;
+
+    // Hide toolbar with animation
+    if (this.toolbarDiv) {
+      this.toolbarDiv.style.transition =
+        "transform 0.3s ease-out, opacity 0.3s ease-out";
+      this.toolbarDiv.style.transform = "translateY(100%)";
+      this.toolbarDiv.style.opacity = "0";
+    }
+
+    // Hide delete button
+    if (this.deleteButton) {
+      this.deleteButton.style.transition =
+        "transform 0.3s ease-out, opacity 0.3s ease-out";
+      this.deleteButton.style.transform = "translateY(-100%)";
+      this.deleteButton.style.opacity = "0";
+    }
+
+    // Hide nav
+    const navDiv = document.querySelector(".nav") as HTMLDivElement;
+    if (navDiv) {
+      navDiv.style.transition =
+        "transform 0.3s ease-out, opacity 0.3s ease-out";
+      navDiv.style.transform = "translateY(-100%)";
+      navDiv.style.opacity = "0";
+      navDiv.style.display = "none";
+    }
+
+    this.hapticFeedback("light");
+    console.log("🙈 Toolbar hidden - swipe down or double-tap to show");
+  }
+
+  private showToolbar() {
+    if (this.isToolbarVisible) return;
+
+    this.isToolbarVisible = true;
+
+    // Show toolbar with animation
+    if (this.toolbarDiv) {
+      this.toolbarDiv.style.transform = "translateY(0)";
+      this.toolbarDiv.style.opacity = "1";
+    }
+
+    // Show delete button
+    if (this.deleteButton) {
+      this.deleteButton.style.transform = "translateY(0)";
+      this.deleteButton.style.opacity = "1";
+    }
+
+    // Show nav
+    const navDiv = document.querySelector(".nav") as HTMLDivElement;
+    if (navDiv) {
+      navDiv.style.transform = "translateY(0)";
+      navDiv.style.opacity = "1";
+      navDiv.style.display = "flex";
+    }
+
+    this.hapticFeedback("light");
+    console.log("👁️ Toolbar shown - swipe up to hide");
+  }
+
+  private toggleToolbar() {
+    if (this.isToolbarVisible) {
+      this.hideToolbar();
+    } else {
+      this.showToolbar();
+    }
+  }
   private async init() {
     this.initDOM();
     this.setupEventListeners();
     await this.loadData();
     this.setupMobileOptimizations();
+    this.setupSwipeGestures();
   }
 
   private initDOM() {
